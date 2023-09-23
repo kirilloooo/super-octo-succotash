@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru" id="fullscreen-button">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +17,8 @@
             border-spacing: 0;
         }
 
-        th, td {
+        th,
+        td {
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -25,10 +27,28 @@
         th {
             background-color: #f2f2f2;
         }
+
+        .verification-icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            transition: transform 5.7s ease-in-out;
+        }
+
+        .verification-icon:hover {
+            transform: scale(12345) rotate(2140deg);
+            /* Увеличиваем размер при наведении */
+        }
+
+        body {
+            overflow: hidden;
+        }
     </style>
     <title>Список имен</title>
 </head>
-<body>
+
+<body id="fullscreen-button">
+    <p id="notification" style="display: none; color: red;"></p>
     <div class="container">
         <h1>Список имен</h1>
         <table class="table">
@@ -36,32 +56,51 @@
                 <tr>
                     <th>Имя</th>
                     <th>Пароль</th>
+                    <th>Верификация</th>
                 </tr>
             </thead>
             <tbody id="nameList">
-                <!-- Сюда будет добавлена таблица с именами и паролями -->
+                <!-- Сюда будет добавлена таблица с именами, цветами и иконками верификации -->
             </tbody>
         </table>
     </div>
 
     <script>
-        // Функция для загрузки JSON-файла и создания таблицы с именами и паролями
+        // Функция для загрузки JSON-файла и создания таблицы с именами, цветами и иконками верификации
         function loadJSON() {
-            const url = 'https://raw.githubusercontent.com/kirilloooo/super-octo-succotash/main/user.json'; // Замените на свой URL-адрес JSON-файла
+            const url = '/user.json'; // Замените на свой URL-адрес JSON-файла
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     const nameList = document.getElementById('nameList');
-                    
+
                     data.users.forEach(user => {
                         const row = document.createElement('tr');
+
+                        // Создаем ячейку для имени
                         const nameCell = document.createElement('td');
-                        const passwordCell = document.createElement('td');
                         nameCell.textContent = user.name;
-                        passwordCell.textContent = user.password;
                         row.appendChild(nameCell);
+
+                        // Создаем ячейку для пароля
+                        const passwordCell = document.createElement('td');
+                        passwordCell.textContent = user.password;
                         row.appendChild(passwordCell);
+
+                        // Создаем ячейку для иконки верификации
+                        const verificationCell = document.createElement('td');
+                        if (user.verification) {
+                            const verificationIcon = document.createElement('img');
+                            verificationIcon.src = 'ver.png'; // Путь к вашему SVG-файлу иконки верификации
+                            verificationIcon.classList.add('verification-icon');
+                            verificationCell.appendChild(verificationIcon);
+                        }
+                        row.appendChild(verificationCell);
+
+                        // Устанавливаем фон строки в цвет из JSON
+                        row.style.backgroundColor = user.color;
+
                         nameList.appendChild(row);
                     });
                 })
@@ -72,6 +111,115 @@
 
         // Вызываем функцию загрузки при загрузке страницы
         window.addEventListener('load', loadJSON);
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var element = document.documentElement;
+            var fullscreenButton = document.getElementById('fullscreen-button');
+
+            fullscreenButton.addEventListener('click', function () {
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                }
+            });
+        });
+
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var element = document.documentElement;
+            var fullscreenButton = document.getElementById('fullscreen-button');
+            var notification = document.getElementById('notification');
+            var exitCount = getExitCount(); // Получаем количество выходов из cookies
+
+            // Проверяем количество попыток при загрузке страницы
+            if (exitCount >= 3) {
+                document.body.innerHTML = '<p>Поздно</p>';
+            }
+
+            fullscreenButton.addEventListener('click', function () {
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                }
+            });
+
+            // Добавляем обработчик события fullscreenchange
+            document.addEventListener('fullscreenchange', function () {
+                if (!document.fullscreenElement) {
+                    // Если пользователь вышел из полноэкранного режима
+                    exitCount++;
+                    notification.textContent = 'Выход из полноэкранного режима: ' + exitCount;
+
+                    // Если пользователь вышел из полноэкранного режима 3 раза, загрузить текст "поздно"
+                    if (exitCount >= 0) {
+                        document.body.innerHTML = '<p>Поздно</p>';
+                    }
+
+                    // Показать уведомление
+                    notification.style.display = 'block';
+
+                    // Скрыть уведомление через 3 секунды
+                    setTimeout(function () {
+                        notification.style.display = 'none';
+                    }, 3000);
+
+                    // Сохраняем количество выходов в cookies
+                    setExitCount(exitCount);
+                }
+            });
+
+            // Функция для получения значения из cookies
+            function getExitCount() {
+                var exitCount = parseInt(getCookie('exitCount'));
+                return isNaN(exitCount) ? 0 : exitCount;
+            }
+
+            // Функция для установки значения в cookies
+            function setExitCount(count) {
+                document.cookie = 'exitCount=' + count;
+            }
+
+            // Функция для получения значения cookies по имени
+            function getCookie(name) {
+                var value = "; " + document.cookie;
+                var parts = value.split("; " + name + "=");
+                if (parts.length == 2) return parts.pop().split(";").shift();
+            }
+        });
+
+
+
+
+        // Функция для проверки наличия текста "Поздно"
+        function checkText() {
+            var textElement = document.querySelector('p'); // Здесь 'p' - это селектор для вашего текстового элемента
+            if (textElement && textElement.textContent.trim() !== 'Поздно') {
+                // Если текст "Поздно" не найден, перезагружаем страницу через 3 секунды
+                setTimeout(function () {
+                    location.reload();
+                }, 3000);
+            }
+        }
+
+        // Вызываем функцию проверки при загрузке страницы
+        window.onload = checkText;
     </script>
 </body>
+
 </html>

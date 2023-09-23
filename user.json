@@ -1,24 +1,34 @@
 {
   "users": [
     {
-      "name": "Иван",
-      "password": "abcdef"
+      "name": "kirilloooo",
+      "password": "abcdef",
+      "color": "#e88db0",
+      "verification": true
     },
     {
       "name": "Мария",
-      "password": "123456"
+      "password": "123456",
+      "color": "#6ef3c0",
+      "verification": true
     },
     {
       "name": "Алексей",
-      "password": "qwerty"
+      "password": "qwerty",
+      "color": "#96e68f",
+      "verification": false
     },
     {
       "name": "Екатерина",
-      "password": "987654"
+      "password": "987654",
+      "color": "#b3ad99",
+      "verification": true
     },
     {
       "name": "Дмитрий",
-      "password": "zxcvbn"
+      "password": "zxcvbn",
+      "color": "#6d8f93",
+      "verification": false
     }
   ]
 }

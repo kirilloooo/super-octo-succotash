@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Случайный пастельный цвет</title>
+    <style>
+        /* Стиль для фона страницы */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Занимает 100% высоты экрана */
+            margin: 0;
+        }
+
+        /* Стиль для текста */
+        h1 {
+            font-size: 24px;
+            color: #333; /* Цвет текста */
+        }
+    </style>
+</head>
+<body>
+    <h1 id="colorCode"></h1>
+
+    <script>
+        // Функция для генерации случайного пастельного цвета
+        function generatePastelColor() {
+            const r = Math.floor(Math.random() * 156) + 100; // Красный (100-255)
+            const g = Math.floor(Math.random() * 156) + 100; // Зеленый (100-255)
+            const b = Math.floor(Math.random() * 156) + 100; // Синий (100-255)
+
+            // Преобразование RGB в шестнадцатеричный формат и удаление хеша (#)
+            return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1, 7);
+        }
+
+        // Генерируем случайный пастельный цвет и устанавливаем его как фон страницы и текст
+        const randomColor = generatePastelColor();
+        document.body.style.backgroundColor = randomColor;
+        document.getElementById("colorCode").textContent = randomColor;
+    </script>
+</body>
+</html>
