@@ -24,17 +24,17 @@
     <script>
         // Функция для загрузки JSON-файла и создания таблицы
         function loadJSON() {
-            const url = 'https://raw.githubusercontent.com/kirilloooo/super-octo-succotash/main/user.json'; // Замените на свой URL-адрес JSON-файла
+            const url = 'https://raw.githubusercontent.com/kirilloooo/super-octo-succotash/main/user.json'; // Ваш URL-адрес JSON-файла
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    const nameList = document.getElementById('users');
+                    const nameList = document.getElementById('nameList');
                     
-                    data.forEach(item => {
+                    data.users.forEach(name => {
                         const row = document.createElement('tr');
                         const cell = document.createElement('td');
-                        cell.textContent = item.name;
+                        cell.textContent = name;
                         row.appendChild(cell);
                         nameList.appendChild(row);
                     });
