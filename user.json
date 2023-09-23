@@ -1,9 +1,24 @@
 {
   "users": [
-    "kirilloooo",
-    "Мария",
-    "Алексей",
-    "Екатерина",
-    "Дмитрий"
+    {
+      "name": "Иван",
+      "password": "abcdef"
+    },
+    {
+      "name": "Мария",
+      "password": "123456"
+    },
+    {
+      "name": "Алексей",
+      "password": "qwerty"
+    },
+    {
+      "name": "Екатерина",
+      "password": "987654"
+    },
+    {
+      "name": "Дмитрий",
+      "password": "zxcvbn"
+    }
   ]
 }

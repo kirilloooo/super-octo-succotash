@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Дополнительные стили для красивой таблицы */
+        .container {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
     <title>Список имен</title>
 </head>
 <body>
@@ -13,29 +35,33 @@
             <thead>
                 <tr>
                     <th>Имя</th>
+                    <th>Пароль</th>
                 </tr>
             </thead>
             <tbody id="nameList">
-                <!-- Сюда будет добавлена таблица с именами -->
+                <!-- Сюда будет добавлена таблица с именами и паролями -->
             </tbody>
         </table>
     </div>
 
     <script>
-        // Функция для загрузки JSON-файла и создания таблицы
+        // Функция для загрузки JSON-файла и создания таблицы с именами и паролями
         function loadJSON() {
-            const url = 'https://raw.githubusercontent.com/kirilloooo/super-octo-succotash/main/user.json'; // Ваш URL-адрес JSON-файла
+            const url = 'https://raw.githubusercontent.com/kirilloooo/super-octo-succotash/main/user.json'; // Замените на свой URL-адрес JSON-файла
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     const nameList = document.getElementById('nameList');
                     
-                    data.users.forEach(name => {
+                    data.users.forEach(user => {
                         const row = document.createElement('tr');
-                        const cell = document.createElement('td');
-                        cell.textContent = name;
-                        row.appendChild(cell);
+                        const nameCell = document.createElement('td');
+                        const passwordCell = document.createElement('td');
+                        nameCell.textContent = user.name;
+                        passwordCell.textContent = user.password;
+                        row.appendChild(nameCell);
+                        row.appendChild(passwordCell);
                         nameList.appendChild(row);
                     });
                 })
