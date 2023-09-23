@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Список имен</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Список имен</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Имя</th>
+                </tr>
+            </thead>
+            <tbody id="nameList">
+                <!-- Сюда будет добавлена таблица с именами -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Функция для загрузки JSON-файла и создания таблицы
+        function loadJSON() {
+            const url = 'https://raw.githubusercontent.com/kirilloooo/super-octo-succotash/main/user.json'; // Замените на свой URL-адрес JSON-файла
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const nameList = document.getElementById('nameList');
+                    
+                    data.forEach(item => {
+                        const row = document.createElement('tr');
+                        const cell = document.createElement('td');
+                        cell.textContent = item.name;
+                        row.appendChild(cell);
+                        nameList.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Произошла ошибка при загрузке данных:', error);
+                });
+        }
+
+        // Вызываем функцию загрузки при загрузке страницы
+        window.addEventListener('load', loadJSON);
+    </script>
+</body>
+</html>
