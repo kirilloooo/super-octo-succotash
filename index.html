@@ -29,7 +29,7 @@
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    const nameList = document.getElementById('nameList');
+                    const nameList = document.getElementById('users');
                     
                     data.forEach(item => {
                         const row = document.createElement('tr');
